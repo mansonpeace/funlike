@@ -50,14 +50,15 @@ const ContactSection = () => {
     button_url: ''
   });
 
+  // ✅ 預設聯絡資訊改成「空值」，不再帶十三洋行的資料
   const [contactInfo, setContactInfo] = useState<ContactInfo>({
-    contact_address: '220 新北市板橋區文化路二段331號6樓',
-    contact_phone: '02-8252-0008',
-    contact_email: 'service@13ocean.com',
-    contact_facebook_url: 'https://www.facebook.com/@thirteenocean/',
-    contact_instagram_url: 'https://www.instagram.com/13___ocean/',
+    contact_address: '',
+    contact_phone: '',
+    contact_email: '',
+    contact_facebook_url: '',
+    contact_instagram_url: '',
     contact_line_url: '',
-    contact_map_embed_url: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3615.109954235097!2d121.46976797605772!3d25.030342338437578!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442a958dab423df%3A0x5289615bc9e4b71b!2z5Y2B5LiJ5rSL6KGM5pyJ6ZmQ5YWs5Y-4!5e0!3m2!1szh-TW!2stw!4v1740538374304!5m2!1szh-TW!2stw'
+    contact_map_embed_url: ''
   });
 
   // 新增服務項目狀態
@@ -123,30 +124,28 @@ const ContactSection = () => {
       if (data) {
         console.log('✅ [修復版] 聯絡資訊載入成功:', data);
         
-        const newContactInfo = {
-          contact_address: data.contact_address || '220 新北市板橋區文化路二段331號6樓',
-          contact_phone: data.contact_phone || '02-8252-0008',
-          contact_email: data.contact_email || 'service@13ocean.com',
-          contact_facebook_url: data.contact_facebook_url || 'https://www.facebook.com/@thirteenocean/',
-          contact_instagram_url: data.contact_instagram_url || 'https://www.instagram.com/13___ocean/',
+        // ✅ fallback 也全部改成空值，不再使用 13ocean 的資訊
+        const newContactInfo: ContactInfo = {
+          contact_address: data.contact_address || '',
+          contact_phone: data.contact_phone || '',
+          contact_email: data.contact_email || '',
+          contact_facebook_url: data.contact_facebook_url || '',
+          contact_instagram_url: data.contact_instagram_url || '',
           contact_line_url: data.contact_line_url || '',
-          contact_map_embed_url: data.contact_map_embed_url || 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3615.109954235097!2d121.46976797605772!3d25.030342338437578!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442a958dab423df%3A0x5289615bc9e4b71b!2z5Y2B5LiJ5rSL6KGM5pyJ6ZmQ5YWs5Y-4!5e0!3m2!1szh-TW!2stw!4v1740538374304!5m2!1szh-TW!2stw'
+          contact_map_embed_url: data.contact_map_embed_url || ''
         };
         
         console.log('🎯 [修復版] 準備更新聯絡資訊狀態:', newContactInfo);
         
-        // 使用函數式更新確保狀態正確設定
         setContactInfo(prevInfo => {
           console.log('📊 [修復版] 舊聯絡資訊:', prevInfo);
           console.log('📊 [修復版] 新聯絡資訊:', newContactInfo);
           return newContactInfo;
         });
         
-        // 更新時間戳記
         const now = Date.now();
         setLastUpdate(now);
         
-        // 強制重新渲染
         setForceRender(prev => {
           const newValue = prev + 1;
           console.log('🔄 [修復版] 強制重新渲染:', newValue);
@@ -195,7 +194,18 @@ const ContactSection = () => {
     } catch (error) {
       console.error('💥 [修復版] 載入聯絡內容時發生錯誤:', error);
     }
-  }, [content.title, content.subtitle, content.content, content.description, content.background_color, content.text_color, content.text_size, content.text_shadow, content.button_text, content.button_url]);
+  }, [
+    content.title,
+    content.subtitle,
+    content.content,
+    content.description,
+    content.background_color,
+    content.text_color,
+    content.text_size,
+    content.text_shadow,
+    content.button_text,
+    content.button_url
+  ]);
 
   useEffect(() => {
     console.log('🚀 [修復版] 元件初始化');
@@ -300,7 +310,9 @@ const ContactSection = () => {
   }, [loadContactInfo, loadContent, loadServiceOptions]);
 
   // 判斷背景顏色是否為漸層
-  const isGradient = content.background_color.includes('from-') || content.background_color.includes('gradient');
+  const isGradient =
+    content.background_color.includes('from-') ||
+    content.background_color.includes('gradient');
   
   // 判斷文字顏色是否為 Tailwind 類別
   const isTextClass = content.text_color.startsWith('text-');
@@ -376,7 +388,10 @@ const ContactSection = () => {
             <div 
               className="h-96 rounded-2xl bg-cover bg-center relative"
               style={{
-                backgroundImage: `url('${content.image_url || "https://readdy.ai/api/search-image?query=modern%20marketing%20office%20building%20exterior%20at%20night%20with%20professional%20lighting%2C%20corporate%20headquarters%2C%20business%20district%2C%20contemporary%20architecture%20with%20glass%20facade&width=600&height=400&seq=office-building&orientation=landscape"}')`
+                backgroundImage: `url('${
+                  content.image_url ||
+                  "https://readdy.ai/api/search-image?query=modern%20marketing%20office%20building%20exterior%20at%20night%20with%20professional%20lighting%2C%20corporate%20headquarters%2C%20business%20district%2C%20contemporary%20architecture%20with%20glass%20facade&width=600&height=400&seq=office-building&orientation=landscape"
+                }')`
               }}
             >
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent rounded-2xl"></div>
@@ -532,11 +547,11 @@ const ContactSection = () => {
           key={`contact-info-section-${uniqueKey}`}
         >
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-            {/* Map - 修復版：完全重新載入 */}
+            {/* Map */}
             <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6">
               <iframe
                 key={`map-iframe-fixed-${forceRender}-${lastUpdate}-${contactInfo.contact_map_embed_url?.slice(-10)}`}
-                src={contactInfo.contact_map_embed_url}
+                src={contactInfo.contact_map_embed_url || 'about:blank'}
                 width="100%"
                 height="300"
                 style={{ border: 0 }}
@@ -547,7 +562,7 @@ const ContactSection = () => {
               ></iframe>
             </div>
 
-            {/* Contact Details - 修復版：強制重新渲染所有內容 */}
+            {/* Contact Details */}
             <div className="space-y-8" key={`contact-details-fixed-${uniqueKey}`}>
               <div>
                 <h4 className="text-2xl font-bold mb-6 text-gray-900">聯絡資訊</h4>
@@ -560,7 +575,7 @@ const ContactSection = () => {
                     <div>
                       <p className="font-semibold text-gray-900">地址</p>
                       <p className="text-gray-800">
-                        {contactInfo.contact_address}
+                        {contactInfo.contact_address || '（尚未設定）'}
                       </p>
                     </div>
                   </div>
@@ -571,12 +586,16 @@ const ContactSection = () => {
                     </div>
                     <div>
                       <p className="font-semibold text-gray-900">電話</p>
-                      <a 
-                        href={`tel:${contactInfo.contact_phone}`} 
-                        className="text-gray-800 hover:text-gray-900 transition-colors cursor-pointer"
-                      >
-                        {contactInfo.contact_phone}
-                      </a>
+                      {contactInfo.contact_phone ? (
+                        <a 
+                          href={`tel:${contactInfo.contact_phone}`} 
+                          className="text-gray-800 hover:text-gray-900 transition-colors cursor-pointer"
+                        >
+                          {contactInfo.contact_phone}
+                        </a>
+                      ) : (
+                        <p className="text-gray-800">（尚未設定）</p>
+                      )}
                     </div>
                   </div>
 
@@ -586,12 +605,16 @@ const ContactSection = () => {
                     </div>
                     <div>
                       <p className="font-semibold text-gray-900">Email</p>
-                      <a 
-                        href={`mailto:${contactInfo.contact_email}`} 
-                        className="text-gray-800 hover:text-gray-900 transition-colors cursor-pointer"
-                      >
-                        {contactInfo.contact_email}
-                      </a>
+                      {contactInfo.contact_email ? (
+                        <a 
+                          href={`mailto:${contactInfo.contact_email}`} 
+                          className="text-gray-800 hover:text-gray-900 transition-colors cursor-pointer"
+                        >
+                          {contactInfo.contact_email}
+                        </a>
+                      ) : (
+                        <p className="text-gray-800">（尚未設定）</p>
+                      )}
                     </div>
                   </div>
                 </div>
