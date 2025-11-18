@@ -11,11 +11,13 @@ interface WebsiteSettings {
 
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  // ✅ 預設改成「瘋來客」，避免載入時先看到舊品牌
   const [settings, setSettings] = useState<WebsiteSettings>({
-    logo_text: '十三洋行',
-    logo_subtitle: '共享廚房',
+    logo_text: '瘋來客',
+    logo_subtitle: '讓品牌被看見',
     logo_size: 'w-12 h-12',
-    header_height: 'py-4' // 預設高度
+    header_height: 'py-4'
   });
 
   useEffect(() => {
@@ -59,13 +61,13 @@ export default function Header() {
 
       if (data) {
         console.log('讀取到的 LOGO 設定:', data);
-        setSettings({
+        setSettings((prev) => ({
           logo_image_url: data.logo_image_url,
-          logo_text: data.logo_text || settings.logo_text,
-          logo_subtitle: data.logo_subtitle || settings.logo_subtitle,
-          logo_size: data.logo_size || 'w-12 h-12',
-          header_height: data.header_height || 'py-4' // 讀取導航列高度設定
-        });
+          logo_text: data.logo_text || prev.logo_text || '瘋來客',
+          logo_subtitle: data.logo_subtitle || prev.logo_subtitle || '讓品牌被看見',
+          logo_size: data.logo_size || prev.logo_size || 'w-12 h-12',
+          header_height: data.header_height || prev.header_height || 'py-4'
+        }));
       }
     } catch (error) {
       console.error('Error:', error);
@@ -76,7 +78,7 @@ export default function Header() {
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
     if (element) {
-      element.scrollIntoView({ 
+      element.scrollIntoView({
         behavior: 'smooth',
         block: 'start'
       });
@@ -100,19 +102,22 @@ export default function Header() {
           {/* Logo區域 */}
           <div className="flex items-center space-x-3">
             {settings.logo_image_url ? (
-              <img 
-                src={settings.logo_image_url} 
-                alt={settings.logo_text || 'Logo'} 
+              <img
+                src={settings.logo_image_url}
+                alt={settings.logo_text || '瘋來客 Logo'}
                 className={`${settings.logo_size || 'w-12 h-12'} object-contain`}
                 key={settings.logo_image_url}
               />
             ) : (
-              <div className={`${settings.logo_size || 'w-12 h-12'} bg-black rounded-full flex items-center justify-center`}>
-                <span className="text-white font-bold text-lg">13</span>
+              // ✅ 沒有圖片時顯示「瘋」字圓形，而不是 13
+              <div
+                className={`${settings.logo_size || 'w-12 h-12'} bg-blue-900 rounded-full flex items-center justify-center`}
+              >
+                <span className="text-white font-bold text-lg">瘋</span>
               </div>
             )}
             <div>
-              <h1 className="text-xl font-bold">{settings.logo_text}</h1>
+              <h1 className="text-xl font-bold">{settings.logo_text || '瘋來客'}</h1>
               {settings.logo_subtitle && (
                 <p className="text-sm opacity-90">{settings.logo_subtitle}</p>
               )}
@@ -133,7 +138,7 @@ export default function Header() {
           </nav>
 
           {/* 免費諮詢按鈕 */}
-          <button 
+          <button
             onClick={() => scrollToSection('contact')}
             className="bg-green-600 hover:bg-green-700 px-6 py-2 rounded-full font-medium transition-colors duration-200 text-white cursor-pointer"
           >
@@ -141,8 +146,8 @@ export default function Header() {
           </button>
 
           {/* 手機選單按鈕 */}
-          <button 
-            className="md:hidden text-white cursor-pointer" 
+          <button
+            className="md:hidden text-white cursor-pointer"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
             <i className={`ri-${isMobileMenuOpen ? 'close' : 'menu'}-line text-2xl`}></i>
