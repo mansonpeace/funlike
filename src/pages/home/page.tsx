@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Header from '../../components/feature/Header';
@@ -16,60 +15,61 @@ const HomePage = () => {
       setIsLoading(false);
     }, 1000);
 
-    // 添加首頁的結構化數據
+    // 添加首頁的結構化數據（已改成瘋來客）
     const addStructuredData = () => {
       const script = document.createElement('script');
       script.type = 'application/ld+json';
       script.text = JSON.stringify({
-        "@context": "https://schema.org",
-        "@type": "WebPage",
-        "name": "十三洋行 - 專業數位行銷服務",
-        "description": "十三洋行提供專業數位行銷服務，透過共享行銷部門模式，為企業提供行銷策略規劃、品牌設計、廣告投放等一站式解決方案",
-        "url": `${import.meta.env.VITE_SITE_URL || 'https://example.com'}/`,
-        "mainEntity": {
-          "@type": "Organization",
-          "name": "十三洋行",
-          "description": "專業數位行銷服務提供商",
-          "url": import.meta.env.VITE_SITE_URL || 'https://example.com',
-          "hasOfferCatalog": {
-            "@type": "OfferCatalog",
-            "name": "數位行銷服務",
-            "itemListElement": [
+        '@context': 'https://schema.org',
+        '@type': 'WebPage',
+        name: '瘋來客 - 專業數位行銷服務',
+        description:
+          '瘋來客提供專業數位行銷服務，包含行銷健診、策略擬定、內容執行與品牌經營等一站式解決方案，協助企業有效被看見並穩定帶來客源。',
+        url: `${import.meta.env.VITE_SITE_URL || 'https://example.com'}/`,
+        mainEntity: {
+          '@type': 'Organization',
+          name: '瘋來客',
+          description: '專注於協助中小企業與個人品牌成長的數位行銷團隊',
+          url: import.meta.env.VITE_SITE_URL || 'https://example.com',
+          hasOfferCatalog: {
+            '@type': 'OfferCatalog',
+            name: '數位行銷服務',
+            itemListElement: [
               {
-                "@type": "Offer",
-                "itemOffered": {
-                  "@type": "Service",
-                  "name": "社群經營",
-                  "description": "專業社群媒體經營與內容策劃"
+                '@type': 'Offer',
+                itemOffered: {
+                  '@type': 'Service',
+                  name: '社群經營',
+                  description: '專業社群媒體經營、貼文企劃與帳號經營策略'
                 }
               },
               {
-                "@type": "Offer", 
-                "itemOffered": {
-                  "@type": "Service",
-                  "name": "網站架設",
-                  "description": "客製化網站設計與開發"
+                '@type': 'Offer',
+                itemOffered: {
+                  '@type': 'Service',
+                  name: '網站架設',
+                  description: '品牌官網與行銷頁面規劃、設計與開發'
                 }
               },
               {
-                "@type": "Offer",
-                "itemOffered": {
-                  "@type": "Service", 
-                  "name": "平面設計",
-                  "description": "品牌視覺設計與平面設計服務"
+                '@type': 'Offer',
+                itemOffered: {
+                  '@type': 'Service',
+                  name: '平面與品牌設計',
+                  description: '品牌視覺規劃、Logo、DM、活動素材等設計服務'
                 }
               }
             ]
           }
         },
-        "breadcrumb": {
-          "@type": "BreadcrumbList",
-          "itemListElement": [
+        breadcrumb: {
+          '@type': 'BreadcrumbList',
+          itemListElement: [
             {
-              "@type": "ListItem",
-              "position": 1,
-              "name": "首頁",
-              "item": import.meta.env.VITE_SITE_URL || 'https://example.com'
+              '@type': 'ListItem',
+              position: 1,
+              name: '首頁',
+              item: import.meta.env.VITE_SITE_URL || 'https://example.com'
             }
           ]
         }
